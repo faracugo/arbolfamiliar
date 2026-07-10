@@ -77,7 +77,7 @@
             flex-grow: 1;
             width: 100%;
             position: relative;
-            overflow: hidden; /* Oculta lo que sobra a nivel general */
+            overflow: hidden;
             padding-bottom: 80px;
         }
 
@@ -97,11 +97,11 @@
             opacity: 1;
             visibility: visible;
             position: relative;
-            overflow-x: auto; /* PERMITE SCROLL HORIZONTAL EN CELULAres */
+            overflow-x: auto;
             overflow-y: auto;
         }
 
-        /* Contenedor que fuerza el ancho del árbol para que no se aplaste */
+        /* Contenedor que fuerza el ancho del árbol */
         .tree-container {
             min-width: max-content;
             padding: 0 20px 20px 20px;
@@ -110,7 +110,7 @@
             margin: 0 auto;
         }
 
-        /* ================= ÁRBOL GENEALÓGICO (Líneas y Nodos) ================= */
+        /* ================= ÁRBOL GENEALÓGICO ================= */
         .tree {
             display: flex;
             justify-content: center;
@@ -134,7 +134,6 @@
             align-items: center;
         }
 
-        /* Líneas horizontales */
         .tree li::before, .tree li::after {
             content: '';
             position: absolute;
@@ -150,7 +149,6 @@
             border-left: 2px solid #b2c2bf;
         }
 
-        /* Quitar líneas de hijos únicos o extremos */
         .tree li:only-child::after, .tree li:only-child::before { display: none; }
         .tree li:only-child { padding-top: 0; }
         .tree li:first-child::before, .tree li:last-child::after { border: 0 none; }
@@ -158,7 +156,6 @@
         .tree li:last-child::before { border-right: 2px solid #b2c2bf; border-radius: 0 5px 0 0; }
         .tree li:first-child::after { border-radius: 5px 0 0 0; }
 
-        /* Líneas verticales hacia abajo */
         .tree ul ul::before {
             content: '';
             position: absolute;
@@ -170,7 +167,7 @@
             transform: translateX(-50%);
         }
 
-        /* ================= ESTILOS DE LOS NODOS (Cajas y Textos) ================= */
+        /* ================= ESTILOS DE LOS NODOS ================= */
         .node.child-main {
             display: flex;
             flex-direction: column;
@@ -199,7 +196,6 @@
             margin-bottom: 3px;
         }
 
-        /* Textos dentro de las cajas */
         .box-name {
             display: block;
             font-weight: bold;
@@ -215,7 +211,6 @@
             margin-top: 4px;
         }
 
-        /* Grilla especial para la Hoja 1 */
         .overview-grid {
             display: flex;
             flex-wrap: wrap;
@@ -225,6 +220,79 @@
             margin: 0 auto;
         }
         .overview-grid .profile.circle { width: 100px; }
+
+        /* ================= ESTILOS DEL CALENDARIO ================= */
+        .calendar-wrapper {
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            box-sizing: border-box;
+            min-width: unset; /* Para que fluya mejor en móvil */
+        }
+
+        .calendar-container {
+            background-color: #ffffff;
+            border: 2px solid #eab69f;
+            border-radius: 10px;
+            padding: 20px;
+            width: 100%;
+            max-width: 900px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .calendar-title {
+            color: #b2c2bf;
+            text-align: center;
+            font-size: 1.5em;
+            margin: 0 0 20px 0;
+            border-bottom: 2px solid #f4e1d2;
+            padding-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            align-items: start;
+        }
+
+        .month-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .month-title {
+            color: #eab69f;
+            font-size: 1.1em;
+            font-weight: bold;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 4px;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+
+        .calendar-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 12px;
+            background-color: #fff9f5;
+            border-radius: 5px;
+            border-left: 4px solid #b2c2bf;
+            align-items: center;
+            font-size: 0.9em;
+        }
+
+        .calendar-name {
+            color: #555;
+            font-weight: bold;
+        }
+
+        .calendar-date {
+            color: #888;
+        }
 
         /* ================= CONTROLES ================= */
         .controls {
@@ -567,7 +635,7 @@
                 </div>
             </div>
         </div>
-       
+        
         <!-- HOJA 11: JUAN ÁNGEL -->
         <div class="slide" id="slide-11">
             <div class="tree-container">
@@ -655,6 +723,143 @@
                             </div>
                         </li>
                     </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- HOJA 16: CALENDARIO DE CUMPLEAÑOS -->
+        <div class="slide" id="slide-16">
+            <div class="calendar-wrapper">
+                <div class="calendar-container">
+                    <h2 class="calendar-title">Calendario de Cumpleaños</h2>
+                    <div class="calendar-grid">
+                        
+                        <!-- Enero -->
+                        <div class="month-group">
+                            <div class="month-title">Enero</div>
+                            <div class="calendar-item"><span class="calendar-name">Mauricio</span><span class="calendar-date">03/01</span></div>
+                            <div class="calendar-item"><span class="calendar-name">Tadeo Andrés</span><span class="calendar-date">13/01</span></div>
+                            <div class="calendar-item"><span class="calendar-name">Isidoro</span><span class="calendar-date">15/01</span></div>
+                            <div class="calendar-item"><span class="calendar-name">Enzo Sebastián</span><span class="calendar-date">17/01</span></div>
+                        </div>
+
+                        <!-- Febrero -->
+                        <div class="month-group">
+                            <div class="month-title">Febrero</div>
+                            <div class="calendar-item"><span class="calendar-name">Diego Iván</span><span class="calendar-date">11/02</span></div>
+                            <div class="calendar-item"><span class="calendar-name">Rubén Dario</span><span class="calendar-date">14/02</span></div>
+                            <div class="calendar-item"><span class="calendar-name">Ercilia</span><span class="calendar-date">16/02</span></div>
+                            <div class="calendar-item"><span class="calendar-name">Adelina</span><span class="calendar-date">17/02</span></div>
+                            <div class="calendar-item"><span class="calendar-name">Aldo</span><span class="calendar-date">18/02</span></div>
+                            <div class="calendar-item"><span class="calendar-name">Sabrina Nicole</span><span class="calendar-date">20/02</span></div>
+                            <div class="calendar-item"><span class="calendar-name">Araceli</span><span class="calendar-date">26/02</span></div>
+                            <div class="calendar-item"><span class="calendar-name">Martín</span><span class="calendar-date">28/02</span></div>
+                        </div>
+
+                        <!-- Marzo -->
+                        <div class="month-group">
+                            <div class="month-title">Marzo</div>
+                            <div class="calendar-item"><span class="calendar-name">Efrén</span><span class="calendar-date">04/03</span></div>
+                            <div class="calendar-item"><span class="calendar-name">Guadalupe</span><span class="calendar-date">12/03</span></div>
+                            <div class="calendar-item"><span class="calendar-name">Herminia</span><span class="calendar-date">17/03</span></div>
+                            <div class="calendar-item"><span class="calendar-name">Stefanía Alelí</span><span class="calendar-date">22/03</span></div>
+                            <div class="calendar-item"><span class="calendar-name">Melody</span><span class="calendar-date">26/03</span></div>
+                            <div class="calendar-item"><span class="calendar-name">Adrián</span><span class="calendar-date">26/03</span></div>
+                        </div>
+
+                        <!-- Abril -->
+                        <div class="month-group">
+                            <div class="month-title">Abril</div>
+                            <div class="calendar-item"><span class="calendar-name">Epifanio Gonzalez</span><span class="calendar-date">07/04</span></div>
+                            <div class="calendar-item"><span class="calendar-name">Gabriela Aramí</span><span class="calendar-date">12/04</span></div>
+                            <div class="calendar-item"><span class="calendar-name">Fabiana Carolina</span><span class="calendar-date">18/04</span></div>
+                            <div class="calendar-item"><span class="calendar-name">Carlos Fabian</span><span class="calendar-date">18/04</span></div>
+                            <div class="calendar-item"><span class="calendar-name">Valeria</span><span class="calendar-date">18/04</span></div>
+                            <div class="calendar-item"><span class="calendar-name">Jenny Carolina</span><span class="calendar-date">30/04</span></div>
+                        </div>
+
+                        <!-- Mayo -->
+                        <div class="month-group">
+                            <div class="month-title">Mayo</div>
+                            <div class="calendar-item"><span class="calendar-name">Jorge</span><span class="calendar-date">01/05</span></div>
+                            <div class="calendar-item"><span class="calendar-name">Carlos Eder</span><span class="calendar-date">02/05</span></div>
+                            <div class="calendar-item"><span class="calendar-name">Miguelina</span><span class="calendar-date">08/05</span></div>
+                            <div class="calendar-item"><span class="calendar-name">Juan Ángel</span><span class="calendar-date">30/05</span></div>
+                            <div class="calendar-item"><span class="calendar-name">Maximiliano</span><span class="calendar-date">30/05</span></div>
+                        </div>
+
+                        <!-- Junio -->
+                        <div class="month-group">
+                            <div class="month-title">Junio</div>
+                            <div class="calendar-item"><span class="calendar-name">Fátima Raquel</span><span class="calendar-date">13/06</span></div>
+                            <div class="calendar-item"><span class="calendar-name">Benjamín</span><span class="calendar-date">26/06</span></div>
+                        </div>
+
+                        <!-- Julio -->
+                        <div class="month-group">
+                            <div class="month-title">Julio</div>
+                            <div class="calendar-item"><span class="calendar-name">Casto</span><span class="calendar-date">01/07</span></div>
+                            <div class="calendar-item"><span class="calendar-name">Ercilia Noemí</span><span class="calendar-date">08/07</span></div>
+                            <div class="calendar-item"><span class="calendar-name">Luana Abigail</span><span class="calendar-date">08/07</span></div>
+                            <div class="calendar-item"><span class="calendar-name">Luana Ayelén</span><span class="calendar-date">08/07</span></div>
+                            <div class="calendar-item"><span class="calendar-name">Fiorella</span><span class="calendar-date">09/07</span></div>
+                            <div class="calendar-item"><span class="calendar-name">Juana Fretes</span><span class="calendar-date">12/07</span></div>
+                            <div class="calendar-item"><span class="calendar-name">Julián</span><span class="calendar-date">14/07</span></div>
+                            <div class="calendar-item"><span class="calendar-name">Mía Monserrat</span><span class="calendar-date">16/07</span></div>
+                            <div class="calendar-item"><span class="calendar-name">José Miguel</span><span class="calendar-date">19/07</span></div>
+                            <div class="calendar-item"><span class="calendar-name">Fabrizio</span><span class="calendar-date">31/07</span></div>
+                        </div>
+
+                        <!-- Agosto -->
+                        <div class="month-group">
+                            <div class="month-title">Agosto</div>
+                            <div class="calendar-item"><span class="calendar-name">Lorenzo</span><span class="calendar-date">10/08</span></div>
+                            <div class="calendar-item"><span class="calendar-name">Tauro</span><span class="calendar-date">11/08</span></div>
+                            <div class="calendar-item"><span class="calendar-name">Rossana</span><span class="calendar-date">21/08</span></div>
+                            <div class="calendar-item"><span class="calendar-name">Nancy</span><span class="calendar-date">21/08</span></div>
+                            <div class="calendar-item"><span class="calendar-name">Natalia</span><span class="calendar-date">29/08</span></div>
+                            <div class="calendar-item"><span class="calendar-name">Gonzalo</span><span class="calendar-date">30/08</span></div>
+                        </div>
+
+                        <!-- Septiembre -->
+                        <div class="month-group">
+                            <div class="month-title">Septiembre</div>
+                            <div class="calendar-item"><span class="calendar-name">Andrea</span><span class="calendar-date">07/09</span></div>
+                            <div class="calendar-item"><span class="calendar-name">Agustín</span><span class="calendar-date">11/09</span></div>
+                            <div class="calendar-item"><span class="calendar-name">Ever (Hijo)</span><span class="calendar-date">12/09</span></div>
+                            <div class="calendar-item"><span class="calendar-name">Alejandra</span><span class="calendar-date">27/09</span></div>
+                        </div>
+
+                        <!-- Octubre -->
+                        <div class="month-group">
+                            <div class="month-title">Octubre</div>
+                            <div class="calendar-item"><span class="calendar-name">María Patricia</span><span class="calendar-date">07/10</span></div>
+                            <div class="calendar-item"><span class="calendar-name">Matias</span><span class="calendar-date">12/10</span></div>
+                            <div class="calendar-item"><span class="calendar-name">Carlos Martín</span><span class="calendar-date">15/10</span></div>
+                            <div class="calendar-item"><span class="calendar-name">Cynthia Lorena</span><span class="calendar-date">17/10</span></div>
+                            <div class="calendar-item"><span class="calendar-name">Sofia Carolina</span><span class="calendar-date">18/10</span></div>
+                            <div class="calendar-item"><span class="calendar-name">José David</span><span class="calendar-date">18/10</span></div>
+                            <div class="calendar-item"><span class="calendar-name">Sofía</span><span class="calendar-date">25/10</span></div>
+                        </div>
+
+                        <!-- Noviembre -->
+                        <div class="month-group">
+                            <div class="month-title">Noviembre</div>
+                            <div class="calendar-item"><span class="calendar-name">César</span><span class="calendar-date">02/11</span></div>
+                            <div class="calendar-item"><span class="calendar-name">Cristian Taurino</span><span class="calendar-date">03/11</span></div>
+                            <div class="calendar-item"><span class="calendar-name">Anabel</span><span class="calendar-date">04/11</span></div>
+                            <div class="calendar-item"><span class="calendar-name">Isabella</span><span class="calendar-date">11/11</span></div>
+                            <div class="calendar-item"><span class="calendar-name">Ever</span><span class="calendar-date">14/11</span></div>
+                            <div class="calendar-item"><span class="calendar-name">César David</span><span class="calendar-date">30/11</span></div>
+                        </div>
+
+                        <!-- Diciembre -->
+                        <div class="month-group">
+                            <div class="month-title">Diciembre</div>
+                            <div class="calendar-item"><span class="calendar-name">Constanza</span><span class="calendar-date">09/12</span></div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </div>
