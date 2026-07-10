@@ -1,1 +1,693 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Árbol Interactivo Familia Gonzalez Fretes</title>
+    
+    <style>
+        /* ================= ESTILOS GENERALES ================= */
+        body {
+            font-family: 'Georgia', serif;
+            background-color: #fdfbf7;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #4a4a4a;
+            height: 100vh;
+            overflow: hidden;
+        }
 
+        /* ================= CABECERA FIJA (ABUELOS) ================= */
+        .fixed-header {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 20px;
+            background-color: #fdfbf7;
+            z-index: 10;
+        }
+
+        .main-title {
+            color: #b2c2bf;
+            font-size: 1.8em;
+            margin: 0 0 15px 0;
+            text-align: center;
+        }
+
+        .couple-container {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .profile.circle {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .circle-img {
+            width: 90px;
+            height: 90px;
+            background-color: #f4e1d2;
+            border-radius: 50%;
+            border: 4px solid #fff;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .circle-img img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .name { font-weight: bold; font-size: 1em; color: #eab69f; }
+        .date { font-size: 0.8em; color: #888; font-style: italic; }
+
+        /* Tronco principal que conecta abuelos con el slider */
+        .main-trunk {
+            width: 2px;
+            height: 30px;
+            background-color: #b2c2bf;
+            margin-top: 10px;
+        }
+
+        /* ================= CONTENEDOR SLIDER ================= */
+        .slider-wrapper {
+            flex-grow: 1;
+            width: 100%;
+            position: relative;
+            overflow-x: auto; /* Permite scroll horizontal si el árbol es muy ancho */
+            overflow-y: auto;
+            padding-bottom: 80px;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            min-height: 100%;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease-in-out;
+            display: flex;
+            justify-content: center;
+            padding-top: 0;
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            position: relative; /* Para que el scroll funcione en la slide activa */
+        }
+
+        /* ================= ÁRBOL GENEALÓGICO (Líneas y Nodos) ================= */
+        .tree {
+            display: flex;
+            justify-content: center;
+        }
+
+        .tree ul {
+            padding-top: 20px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            padding-left: 0;
+            margin: 0;
+        }
+
+        .tree li {
+            list-style-type: none;
+            position: relative;
+            padding: 20px 10px 0 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Líneas horizontales */
+        .tree li::before, .tree li::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 50%;
+            border-top: 2px solid #b2c2bf;
+            width: 50%;
+            height: 20px;
+        }
+        .tree li::after {
+            right: auto;
+            left: 50%;
+            border-left: 2px solid #b2c2bf;
+        }
+
+        /* Quitar líneas de hijos únicos o extremos */
+        .tree li:only-child::after, .tree li:only-child::before { display: none; }
+        .tree li:only-child { padding-top: 0; }
+        .tree li:first-child::before, .tree li:last-child::after { border: 0 none; }
+        
+        /* Curvas de los extremos */
+        .tree li:last-child::before {
+            border-right: 2px solid #b2c2bf;
+            border-radius: 0 5px 0 0;
+        }
+        .tree li:first-child::after {
+            border-radius: 5px 0 0 0;
+        }
+
+        /* Líneas verticales hacia abajo (Hijos) */
+        .tree ul ul::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            border-left: 2px solid #b2c2bf;
+            width: 0;
+            height: 20px;
+            transform: translateX(-50%);
+        }
+
+        /* ================= ESTILOS DE LOS NODOS (Cajas y Círculos) ================= */
+        /* Círculo para los 15 Hijos Principales */
+        .node.child-main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        /* Caja para Nietos (Hijos de los Hijos) */
+        .node.box {
+            background-color: #ffffff;
+            border: 2px solid #eab69f;
+            border-radius: 8px;
+            padding: 10px 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            font-weight: bold;
+            color: #555;
+            text-align: center;
+            min-width: 100px;
+            margin-bottom: 5px;
+        }
+
+        /* Sub-caja para Bisnietos (Nietos de los Hijos) */
+        .node.sub-box {
+            background-color: #fff9f5;
+            border: 1px solid #b2c2bf;
+            border-radius: 5px;
+            padding: 6px 10px;
+            font-size: 0.85em;
+            color: #6d827f;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        /* Grilla especial para la Hoja 1 (Visión General de los 15 hijos) */
+        .overview-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            max-width: 800px;
+            padding-top: 10px;
+        }
+        .overview-grid .profile.circle {
+            width: 100px;
+        }
+
+        /* ================= CONTROLES (BOTONES) ================= */
+        .controls {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 20;
+            background: rgba(253, 251, 247, 0.9);
+            padding: 10px 20px;
+            border-radius: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        button {
+            background-color: #b2c2bf;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:active { background-color: #9cb0ac; }
+        button:disabled { background-color: #e0e0e0; cursor: not-allowed; }
+
+        /* Título del capítulo en el slide */
+        .slide-title {
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            color: #888;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- CABECERA FIJA (Siempre visible) -->
+    <div class="fixed-header">
+        <h1 class="main-title">Familia González Fretes</h1>
+        <div class="couple-container">
+            <div class="profile circle">
+                <div class="circle-img"><img src="foto1.jpg" alt="Epifanio"></div>
+                <span class="name">Epifanio Gonzalez</span>
+                <span class="date">07/04/1931</span>
+            </div>
+            <div class="profile circle">
+                <div class="circle-img"><img src="foto2.jpg" alt="Juana"></div>
+                <span class="name">Juana Fretes</span>
+                <span class="date">12/07/1937</span>
+            </div>
+        </div>
+        <div class="main-trunk"></div>
+    </div>
+
+    <!-- CONTENEDOR DE HOJAS (SLIDES) -->
+    <div class="slider-wrapper">
+        
+        <!-- HOJA 0: VISIÓN GENERAL (LOS 15 HIJOS) -->
+        <div class="slide active" id="slide-0">
+            <span class="slide-title">Visión General</span>
+            <div class="overview-grid">
+                <!-- Se listan los 15 sin líneas de árbol complejas para que quepan bien -->
+                <div class="profile circle"><div class="circle-img"><img src="foto3.jpg"></div><span class="name">Ercilia</span></div>
+                <div class="profile circle"><div class="circle-img"><img src="foto4.jpg"></div><span class="name">Miguelina</span></div>
+                <div class="profile circle"><div class="circle-img"><img src="foto5.jpg"></div><span class="name">Tauro</span></div>
+                <div class="profile circle"><div class="circle-img"><img src="foto6.jpg"></div><span class="name">Herminia</span></div>
+                <div class="profile circle"><div class="circle-img"><img src="foto7.jpg"></div><span class="name">Soriano</span></div>
+                <div class="profile circle"><div class="circle-img"><img src="foto8.jpg"></div><span class="name">Adelina</span></div>
+                <div class="profile circle"><div class="circle-img"><img src="foto9.jpg"></div><span class="name">Casto</span></div>
+                <div class="profile circle"><div class="circle-img"><img src="foto10.jpg"></div><span class="name">Isidoro</span></div>
+                <div class="profile circle"><div class="circle-img"><img src="foto11.jpg"></div><span class="name">Efrén</span></div>
+                <div class="profile circle"><div class="circle-img"><img src="foto12.jpg"></div><span class="name">Ever</span></div>
+                <div class="profile circle"><div class="circle-img"><img src="foto13.jpg"></div><span class="name">Juan Ángel</span></div>
+                <div class="profile circle"><div class="circle-img"><img src="foto14.jpg"></div><span class="name">Lorenzo</span></div>
+                <div class="profile circle"><div class="circle-img"><img src="foto15.jpg"></div><span class="name">Nancy</span></div>
+                <div class="profile circle"><div class="circle-img"><img src="foto16.jpg"></div><span class="name">Adrián</span></div>
+                <div class="profile circle"><div class="circle-img"><img src="foto17.jpg"></div><span class="name">Julián</span></div>
+            </div>
+        </div>
+
+        <!-- HOJA 1: ERCILIA -->
+        <div class="slide" id="slide-1">
+            <span class="slide-title">Capítulo 1</span>
+            <div class="tree">
+                <ul>
+                    <li>
+                        <!-- HIJO PRINCIPAL -->
+                        <div class="node child-main profile circle">
+                            <div class="circle-img"><img src="foto3.jpg"></div>
+                            <span class="name">Ercilia</span><span class="date">16/02/1957</span>
+                        </div>
+                        <!-- SUS HIJOS Y NIETOS -->
+                        <ul>
+                            <li>
+                                <div class="node box">Cesar David</div>
+                                <ul>
+                                    <li><div class="node sub-box">Cesar</div></li>
+                                    <li><div class="node sub-box">Constanza</div></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <div class="node box">Ruben Dario</div>
+                                <ul>
+                                    <li><div class="node sub-box">Anabel</div></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <div class="node box">Ercilia Noemí</div>
+                                <ul>
+                                    <li><div class="node sub-box">Luana Abigail</div></li>
+                                    <li><div class="node sub-box">Luana Ayelén</div></li>
+                                </ul>
+                            </li>
+                            <li><div class="node box">Fabiana Carolina</div></li>
+                            <li><div class="node box">Carlos Fabian</div></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- HOJA 2: MIGUELINA -->
+        <div class="slide" id="slide-2">
+            <span class="slide-title">Capítulo 2</span>
+            <div class="tree">
+                <ul>
+                    <li>
+                        <div class="node child-main profile circle">
+                            <div class="circle-img"><img src="foto4.jpg"></div>
+                            <span class="name">Miguelina</span><span class="date">08/05/1958</span>
+                        </div>
+                        <ul>
+                            <li>
+                                <div class="node box">Jorge</div>
+                                <ul>
+                                    <li><div class="node sub-box">Valeria</div></li>
+                                    <li><div class="node sub-box">Alejandra</div></li>
+                                    <li><div class="node sub-box">Andrea</div></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <div class="node box">Cynthia Lorena</div>
+                                <ul>
+                                    <li><div class="node sub-box">Diego Iván</div></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- HOJA 3: TAURO -->
+        <div class="slide" id="slide-3">
+            <span class="slide-title">Capítulo 3</span>
+            <div class="tree">
+                <ul>
+                    <li>
+                        <div class="node child-main profile circle">
+                            <div class="circle-img"><img src="foto5.jpg"></div>
+                            <span class="name">Tauro</span><span class="date">11/08/1959</span>
+                        </div>
+                        <ul>
+                            <li>
+                                <div class="node box">Cristian Taurino</div>
+                                <ul>
+                                    <li><div class="node sub-box">Agustín</div></li>
+                                    <li><div class="node sub-box">Sofia</div></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <div class="node box">Carlos Eder</div>
+                                <ul>
+                                    <li><div class="node sub-box">Gonzalo</div></li>
+                                </ul>
+                            </li>
+                            <li><div class="node box">José Miguel</div></li>
+                            <li><div class="node box">Andrés</div></li>
+                            <li><div class="node box">Enzo</div></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- HOJA 4: HERMINIA -->
+        <div class="slide" id="slide-4">
+            <span class="slide-title">Capítulo 4</span>
+            <div class="tree">
+                <ul>
+                    <li>
+                        <div class="node child-main profile circle">
+                            <div class="circle-img"><img src="foto6.jpg"></div>
+                            <span class="name">Herminia</span><span class="date">17/03/1961</span>
+                        </div>
+                        <ul>
+                            <li>
+                                <div class="node box">Carlos Martín</div>
+                                <ul>
+                                    <li><div class="node sub-box">Benjamín</div></li>
+                                    <li><div class="node sub-box">Mauricio</div></li>
+                                    <li><div class="node sub-box">Isabella</div></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <div class="node box">Sofia Carolina</div>
+                                <ul>
+                                    <li><div class="node sub-box">Sabrina Nicole</div></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- HOJA 5: SORIANO (Sin descendientes) -->
+        <div class="slide" id="slide-5">
+            <span class="slide-title">Capítulo 5</span>
+            <div class="tree">
+                <ul>
+                    <li>
+                        <div class="node child-main profile circle">
+                            <div class="circle-img"><img src="foto7.jpg"></div>
+                            <span class="name">Soriano</span><span class="date">En memoria</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- HOJA 6: ADELINA -->
+        <div class="slide" id="slide-6">
+            <span class="slide-title">Capítulo 6</span>
+            <div class="tree">
+                <ul>
+                    <li>
+                        <div class="node child-main profile circle">
+                            <div class="circle-img"><img src="foto8.jpg"></div>
+                            <span class="name">Adelina</span><span class="date">17/02/1964</span>
+                        </div>
+                        <ul>
+                            <li>
+                                <div class="node box">Jenny Carolina</div>
+                                <ul>
+                                    <li><div class="node sub-box">Martín</div></li>
+                                </ul>
+                            </li>
+                            <li><div class="node box">Fatima Raquel</div></li>
+                            <li><div class="node box">Stefania Alelí</div></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- HOJA 7: CASTO -->
+        <div class="slide" id="slide-7">
+            <span class="slide-title">Capítulo 7</span>
+            <div class="tree">
+                <ul>
+                    <li>
+                        <div class="node child-main profile circle">
+                            <div class="circle-img"><img src="foto9.jpg"></div>
+                            <span class="name">Casto</span><span class="date">01/07/AAAA</span>
+                        </div>
+                        <ul>
+                            <li><div class="node box">Monserrat</div></li>
+                            <li><div class="node box">Fabricio</div></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- HOJA 8: ISIDORO -->
+        <div class="slide" id="slide-8">
+            <span class="slide-title">Capítulo 8</span>
+            <div class="tree">
+                <ul>
+                    <li>
+                        <div class="node child-main profile circle">
+                            <div class="circle-img"><img src="foto10.jpg"></div>
+                            <span class="name">Isidoro</span><span class="date">15/01/AAAA</span>
+                        </div>
+                        <ul>
+                            <li><div class="node box">Araceli</div></li>
+                            <li><div class="node box">José David</div></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- HOJA 9: EFRÉN -->
+        <div class="slide" id="slide-9">
+            <span class="slide-title">Capítulo 9</span>
+            <div class="tree">
+                <ul>
+                    <li>
+                        <div class="node child-main profile circle">
+                            <div class="circle-img"><img src="foto11.jpg"></div>
+                            <span class="name">Efrén</span><span class="date">04/03/AAAA</span>
+                        </div>
+                        <ul>
+                            <li>
+                                <div class="node box">Rossana</div>
+                                <ul><li><div class="node sub-box">Melody</div></li></ul>
+                            </li>
+                            <li><div class="node box">Ever</div></li>
+                            <li><div class="node box">Natalia</div></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- HOJA 10: EVER -->
+        <div class="slide" id="slide-10">
+            <span class="slide-title">Capítulo 10</span>
+            <div class="tree">
+                <ul>
+                    <li>
+                        <div class="node child-main profile circle">
+                            <div class="circle-img"><img src="foto12.jpg"></div>
+                            <span class="name">Ever</span><span class="date">DD/MM/AAAA</span>
+                        </div>
+                        <ul>
+                            <li><div class="node box">Guadalupe</div></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- HOJA 11: JUAN ÁNGEL -->
+        <div class="slide" id="slide-11">
+            <span class="slide-title">Capítulo 11</span>
+            <div class="tree">
+                <ul>
+                    <li>
+                        <div class="node child-main profile circle">
+                            <div class="circle-img"><img src="foto13.jpg"></div>
+                            <span class="name">Juan Ángel</span><span class="date">30/05/1977</span>
+                        </div>
+                        <ul>
+                            <li><div class="node box">Maximiliano</div></li>
+                            <li><div class="node box">Matias</div></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- HOJA 12: LORENZO -->
+        <div class="slide" id="slide-12">
+            <span class="slide-title">Capítulo 12</span>
+            <div class="tree">
+                <ul>
+                    <li>
+                        <div class="node child-main profile circle">
+                            <div class="circle-img"><img src="foto14.jpg"></div>
+                            <span class="name">Lorenzo</span><span class="date">10/08/AAAA</span>
+                        </div>
+                        <ul>
+                            <li><div class="node box">Patricia</div></li>
+                            <li><div class="node box">Aldo</div></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- HOJA 13: NANCY -->
+        <div class="slide" id="slide-13">
+            <span class="slide-title">Capítulo 13</span>
+            <div class="tree">
+                <ul>
+                    <li>
+                        <div class="node child-main profile circle">
+                            <div class="circle-img"><img src="foto15.jpg"></div>
+                            <span class="name">Nancy</span><span class="date">21/08/1979</span>
+                        </div>
+                        <ul>
+                            <li><div class="node box">Gabriela Aramí</div></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- HOJA 14: ADRIÁN -->
+        <div class="slide" id="slide-14">
+            <span class="slide-title">Capítulo 14</span>
+            <div class="tree">
+                <ul>
+                    <li>
+                        <div class="node child-main profile circle">
+                            <div class="circle-img"><img src="foto16.jpg"></div>
+                            <span class="name">Adrián</span><span class="date">26/03/1981</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- HOJA 15: JULIÁN -->
+        <div class="slide" id="slide-15">
+            <span class="slide-title">Capítulo 15</span>
+            <div class="tree">
+                <ul>
+                    <li>
+                        <div class="node child-main profile circle">
+                            <div class="circle-img"><img src="foto17.jpg"></div>
+                            <span class="name">Julián</span><span class="date">DD/MM/AAAA</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- BOTONES DE NAVEGACIÓN -->
+    <div class="controls">
+        <button id="btn-prev" onclick="prevPage()" disabled>&#8592; Anterior</button>
+        <button id="btn-next" onclick="nextPage()">Siguiente &#8594;</button>
+    </div>
+
+    <script>
+        let currentPage = 0;
+        const pages = document.querySelectorAll('.slide');
+        const totalPages = pages.length;
+        
+        const btnPrev = document.getElementById('btn-prev');
+        const btnNext = document.getElementById('btn-next');
+
+        function updatePages() {
+            pages.forEach((page, index) => {
+                if (index === currentPage) {
+                    page.classList.add('active');
+                } else {
+                    page.classList.remove('active');
+                }
+            });
+
+            btnPrev.disabled = currentPage === 0;
+            btnNext.disabled = currentPage === totalPages - 1;
+        }
+
+        function nextPage() {
+            if (currentPage < totalPages - 1) {
+                currentPage++;
+                updatePages();
+            }
+        }
+
+        function prevPage() {
+            if (currentPage > 0) {
+                currentPage--;
+                updatePages();
+            }
+        }
+    </script>
+</body>
+</html>
