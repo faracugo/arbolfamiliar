@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Árbol Fam González Fretes</title>
+    <title>Árbol Fam González Fretes - Modo Cine</title>
     
     <style>
-        /* ================= ESTILOS GENERALES ================= */
+        /* ================= ESTILOS GENERALES (MODO OSCURO) ================= */
         body {
             font-family: 'Georgia', serif;
-            background-color: #fdfbf7;
+            background-color: #1a1a1d; /* Gris carbón oscuro para no deslumbrar */
             margin: 0;
             display: flex;
             flex-direction: column;
-            color: #4a4a4a;
+            color: #e0e0e0;
             height: 100vh;
             overflow: hidden;
         }
@@ -25,15 +25,16 @@
             flex-direction: column;
             align-items: center;
             padding-top: 20px;
-            background-color: #fdfbf7;
+            background-color: #1a1a1d;
             z-index: 10;
         }
 
         .main-title {
-            color: #b2c2bf;
+            color: #88d4c6; /* Menta vibrante */
             font-size: 1.8em;
             margin: 0 0 15px 0;
             text-align: center;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
 
         .couple-container {
@@ -52,27 +53,27 @@
         .circle-img {
             width: 90px;
             height: 90px;
-            background-color: #f4e1d2;
+            background-color: #2a2a2f;
             border-radius: 50%;
-            border: 4px solid #fff;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            border: 3px solid #3a3a40; /* Borde oscuro para fusionarse bien */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
             overflow: hidden;
             margin-bottom: 8px;
         }
 
         .circle-img img { width: 100%; height: 100%; object-fit: cover; }
         
-        .name { font-weight: bold; font-size: 1em; color: #eab69f; }
-        .date { font-size: 0.8em; color: #888; font-style: italic; }
+        .name { font-weight: bold; font-size: 1em; color: #ff9e7d; /* Salmón brillante */ }
+        .date { font-size: 0.8em; color: #b0b0b0; font-style: italic; }
 
         .main-trunk {
             width: 2px;
             height: 30px;
-            background-color: #b2c2bf;
+            background-color: #88d4c6; /* Línea central iluminada */
             margin-top: 10px;
         }
 
-        /* ================= CONTENEDOR SLIDER (SOLUCIÓN MÓVIL) ================= */
+        /* ================= CONTENEDOR SLIDER ================= */
         .slider-wrapper {
             flex-grow: 1;
             width: 100%;
@@ -101,7 +102,6 @@
             overflow-y: auto;
         }
 
-        /* Contenedor que fuerza el ancho del árbol */
         .tree-container {
             min-width: max-content;
             padding: 0 20px 20px 20px;
@@ -111,10 +111,7 @@
         }
 
         /* ================= ÁRBOL GENEALÓGICO ================= */
-        .tree {
-            display: flex;
-            justify-content: center;
-        }
+        .tree { display: flex; justify-content: center; }
 
         .tree ul {
             padding-top: 20px;
@@ -134,26 +131,27 @@
             align-items: center;
         }
 
+        /* Líneas del árbol iluminadas para el proyector */
         .tree li::before, .tree li::after {
             content: '';
             position: absolute;
             top: 0;
             right: 50%;
-            border-top: 2px solid #b2c2bf;
+            border-top: 2px solid #88d4c6; 
             width: 50%;
             height: 20px;
         }
         .tree li::after {
             right: auto;
             left: 50%;
-            border-left: 2px solid #b2c2bf;
+            border-left: 2px solid #88d4c6;
         }
 
         .tree li:only-child::after, .tree li:only-child::before { display: none; }
         .tree li:only-child { padding-top: 0; }
         .tree li:first-child::before, .tree li:last-child::after { border: 0 none; }
         
-        .tree li:last-child::before { border-right: 2px solid #b2c2bf; border-radius: 0 5px 0 0; }
+        .tree li:last-child::before { border-right: 2px solid #88d4c6; border-radius: 0 5px 0 0; }
         .tree li:first-child::after { border-radius: 5px 0 0 0; }
 
         .tree ul ul::before {
@@ -161,13 +159,13 @@
             position: absolute;
             top: 0;
             left: 50%;
-            border-left: 2px solid #b2c2bf;
+            border-left: 2px solid #88d4c6;
             width: 0;
             height: 20px;
             transform: translateX(-50%);
         }
 
-        /* ================= ESTILOS DE LOS NODOS ================= */
+        /* ================= ESTILOS DE LOS NODOS OSCUROS ================= */
         .node.child-main {
             display: flex;
             flex-direction: column;
@@ -176,19 +174,19 @@
         }
 
         .node.box {
-            background-color: #ffffff;
-            border: 2px solid #eab69f;
+            background-color: #2a2a2f; /* Caja gris oscura */
+            border: 2px solid #ff9e7d; /* Borde salmón brillante */
             border-radius: 8px;
             padding: 10px 15px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
             text-align: center;
             min-width: 120px;
             margin-bottom: 5px;
         }
 
         .node.sub-box {
-            background-color: #fff9f5;
-            border: 1px solid #b2c2bf;
+            background-color: #222226; /* Caja más oscura para nietos */
+            border: 1px solid #88d4c6; /* Borde menta brillante */
             border-radius: 5px;
             padding: 8px 12px;
             text-align: center;
@@ -199,14 +197,14 @@
         .box-name {
             display: block;
             font-weight: bold;
-            color: #555;
+            color: #ffffff; /* Alto contraste para proyectar */
             font-size: 0.95em;
         }
 
         .box-date {
             display: block;
             font-size: 0.8em;
-            color: #888;
+            color: #b0b0b0;
             font-weight: normal;
             margin-top: 4px;
         }
@@ -221,32 +219,31 @@
         }
         .overview-grid .profile.circle { width: 100px; }
 
-        /* ================= ESTILOS DEL CALENDARIO ================= */
+        /* ================= ESTILOS DEL CALENDARIO OSCURO ================= */
         .calendar-wrapper {
             padding: 20px;
             display: flex;
             justify-content: center;
             width: 100%;
             box-sizing: border-box;
-            min-width: unset; /* Para que fluya mejor en móvil */
         }
 
         .calendar-container {
-            background-color: #ffffff;
-            border: 2px solid #eab69f;
+            background-color: #2a2a2f;
+            border: 2px solid #ff9e7d;
             border-radius: 10px;
             padding: 20px;
             width: 100%;
             max-width: 900px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.4);
         }
 
         .calendar-title {
-            color: #b2c2bf;
+            color: #88d4c6;
             text-align: center;
             font-size: 1.5em;
             margin: 0 0 20px 0;
-            border-bottom: 2px solid #f4e1d2;
+            border-bottom: 2px solid #3a3a40;
             padding-bottom: 10px;
             font-weight: bold;
         }
@@ -265,10 +262,10 @@
         }
 
         .month-title {
-            color: #eab69f;
+            color: #ff9e7d;
             font-size: 1.1em;
             font-weight: bold;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid #3a3a40;
             padding-bottom: 4px;
             margin-bottom: 4px;
             text-transform: uppercase;
@@ -278,23 +275,23 @@
             display: flex;
             justify-content: space-between;
             padding: 8px 12px;
-            background-color: #fff9f5;
+            background-color: #222226;
             border-radius: 5px;
-            border-left: 4px solid #b2c2bf;
+            border-left: 4px solid #88d4c6;
             align-items: center;
             font-size: 0.9em;
         }
 
         .calendar-name {
-            color: #555;
+            color: #ffffff;
             font-weight: bold;
         }
 
         .calendar-date {
-            color: #888;
+            color: #b0b0b0;
         }
 
-        /* ================= CONTROLES ================= */
+        /* ================= CONTROLES (BOTONES) ================= */
         .controls {
             position: fixed;
             bottom: 20px;
@@ -303,15 +300,16 @@
             display: flex;
             gap: 15px;
             z-index: 20;
-            background: rgba(253, 251, 247, 0.9);
+            background: rgba(26, 26, 29, 0.9); /* Fondo translúcido oscuro */
             padding: 10px 20px;
             border-radius: 30px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            border: 1px solid #3a3a40;
         }
 
         button {
-            background-color: #b2c2bf;
-            color: white;
+            background-color: #88d4c6;
+            color: #1a1a1d; /* Texto oscuro para botón claro */
             border: none;
             padding: 10px 20px;
             font-size: 16px;
@@ -320,13 +318,12 @@
             cursor: pointer;
             transition: background-color 0.3s;
         }
-        button:active { background-color: #9cb0ac; }
-        button:disabled { background-color: #e0e0e0; cursor: not-allowed; }
+        button:active { background-color: #76c7b7; }
+        button:disabled { background-color: #333333; color: #666666; cursor: not-allowed; }
     </style>
 </head>
 <body>
 
-    <!-- CABECERA FIJA -->
     <div class="fixed-header">
         <h1 class="main-title">Familia González Fretes</h1>
         <div class="couple-container">
@@ -344,10 +341,8 @@
         <div class="main-trunk"></div>
     </div>
 
-    <!-- CONTENEDOR DE HOJAS -->
     <div class="slider-wrapper">
         
-        <!-- HOJA 0: VISIÓN GENERAL -->
         <div class="slide active" id="slide-0">
             <div class="tree-container">
                 <div class="overview-grid">
@@ -370,7 +365,6 @@
             </div>
         </div>
 
-        <!-- HOJA 1: ERCILIA -->
         <div class="slide" id="slide-1">
             <div class="tree-container">
                 <div class="tree">
@@ -384,7 +378,7 @@
                                 <li>
                                     <div class="node box"><span class="box-name">César David</span><span class="box-date">30/11/1981</span></div>
                                     <ul>
-                                        <li><div class="node sub-box"><span class="box-name">César</span><span class="box-date">2/11/2011</span></div></li>
+                                        <li><div class="node sub-box"><span class="box-name">César</span><span class="box-date">02/11/2011</span></div></li>
                                         <li><div class="node sub-box"><span class="box-name">Constanza</span><span class="box-date">09/12/2025</span></div></li>
                                     </ul>
                                 </li>
@@ -410,7 +404,6 @@
             </div>
         </div>
 
-        <!-- HOJA 2: MIGUELINA -->
         <div class="slide" id="slide-2">
             <div class="tree-container">
                 <div class="tree">
@@ -442,7 +435,6 @@
             </div>
         </div>
 
-        <!-- HOJA 3: TAURO -->
         <div class="slide" id="slide-3">
             <div class="tree-container">
                 <div class="tree">
@@ -477,7 +469,6 @@
             </div>
         </div>
 
-        <!-- HOJA 4: HERMINIA -->
         <div class="slide" id="slide-4">
             <div class="tree-container">
                 <div class="tree">
@@ -509,7 +500,6 @@
             </div>
         </div>
 
-        <!-- HOJA 5: SORIANO -->
         <div class="slide" id="slide-5">
             <div class="tree-container">
                 <div class="tree">
@@ -525,7 +515,6 @@
             </div>
         </div>
 
-        <!-- HOJA 6: ADELINA -->
         <div class="slide" id="slide-6">
             <div class="tree-container">
                 <div class="tree">
@@ -551,7 +540,6 @@
             </div>
         </div>
 
-        <!-- HOJA 7: CASTO -->
         <div class="slide" id="slide-7">
             <div class="tree-container">
                 <div class="tree">
@@ -571,7 +559,6 @@
             </div>
         </div>
 
-        <!-- HOJA 8: ISIDORO -->
         <div class="slide" id="slide-8">
             <div class="tree-container">
                 <div class="tree">
@@ -591,7 +578,6 @@
             </div>
         </div>
 
-        <!-- HOJA 9: EFRÉN -->
         <div class="slide" id="slide-9">
             <div class="tree-container">
                 <div class="tree">
@@ -617,7 +603,6 @@
             </div>
         </div>
 
-        <!-- HOJA 10: EVER -->
         <div class="slide" id="slide-10">
             <div class="tree-container">
                 <div class="tree">
@@ -636,7 +621,6 @@
             </div>
         </div>
         
-        <!-- HOJA 11: JUAN ÁNGEL -->
         <div class="slide" id="slide-11">
             <div class="tree-container">
                 <div class="tree">
@@ -656,7 +640,6 @@
             </div>
         </div>
         
-        <!-- HOJA 12: LORENZO -->
         <div class="slide" id="slide-12">
             <div class="tree-container">
                 <div class="tree">
@@ -676,7 +659,6 @@
             </div>
         </div>
 
-        <!-- HOJA 13: NANCY -->
         <div class="slide" id="slide-13">
             <div class="tree-container">
                 <div class="tree">
@@ -695,7 +677,6 @@
             </div>
         </div>
 
-        <!-- HOJA 14: ADRIÁN -->
         <div class="slide" id="slide-14">
             <div class="tree-container">
                 <div class="tree">
@@ -711,7 +692,6 @@
             </div>
         </div>
 
-        <!-- HOJA 15: JULIÁN -->
         <div class="slide" id="slide-15">
             <div class="tree-container">
                 <div class="tree">
@@ -727,14 +707,12 @@
             </div>
         </div>
 
-        <!-- HOJA 16: CALENDARIO DE CUMPLEAÑOS -->
         <div class="slide" id="slide-16">
             <div class="calendar-wrapper">
                 <div class="calendar-container">
                     <h2 class="calendar-title">Calendario de Cumpleaños</h2>
                     <div class="calendar-grid">
                         
-                        <!-- Enero -->
                         <div class="month-group">
                             <div class="month-title">Enero</div>
                             <div class="calendar-item"><span class="calendar-name">Mauricio</span><span class="calendar-date">03/01</span></div>
@@ -743,7 +721,6 @@
                             <div class="calendar-item"><span class="calendar-name">Enzo Sebastián</span><span class="calendar-date">17/01</span></div>
                         </div>
 
-                        <!-- Febrero -->
                         <div class="month-group">
                             <div class="month-title">Febrero</div>
                             <div class="calendar-item"><span class="calendar-name">Diego Iván</span><span class="calendar-date">11/02</span></div>
@@ -756,7 +733,6 @@
                             <div class="calendar-item"><span class="calendar-name">Martín</span><span class="calendar-date">28/02</span></div>
                         </div>
 
-                        <!-- Marzo -->
                         <div class="month-group">
                             <div class="month-title">Marzo</div>
                             <div class="calendar-item"><span class="calendar-name">Efrén</span><span class="calendar-date">04/03</span></div>
@@ -767,7 +743,6 @@
                             <div class="calendar-item"><span class="calendar-name">Adrián</span><span class="calendar-date">26/03</span></div>
                         </div>
 
-                        <!-- Abril -->
                         <div class="month-group">
                             <div class="month-title">Abril</div>
                             <div class="calendar-item"><span class="calendar-name">Epifanio Gonzalez</span><span class="calendar-date">07/04</span></div>
@@ -778,7 +753,6 @@
                             <div class="calendar-item"><span class="calendar-name">Jenny Carolina</span><span class="calendar-date">30/04</span></div>
                         </div>
 
-                        <!-- Mayo -->
                         <div class="month-group">
                             <div class="month-title">Mayo</div>
                             <div class="calendar-item"><span class="calendar-name">Jorge</span><span class="calendar-date">01/05</span></div>
@@ -788,14 +762,12 @@
                             <div class="calendar-item"><span class="calendar-name">Maximiliano</span><span class="calendar-date">30/05</span></div>
                         </div>
 
-                        <!-- Junio -->
                         <div class="month-group">
                             <div class="month-title">Junio</div>
                             <div class="calendar-item"><span class="calendar-name">Fátima Raquel</span><span class="calendar-date">13/06</span></div>
                             <div class="calendar-item"><span class="calendar-name">Benjamín</span><span class="calendar-date">26/06</span></div>
                         </div>
 
-                        <!-- Julio -->
                         <div class="month-group">
                             <div class="month-title">Julio</div>
                             <div class="calendar-item"><span class="calendar-name">Casto</span><span class="calendar-date">01/07</span></div>
@@ -810,7 +782,6 @@
                             <div class="calendar-item"><span class="calendar-name">Fabrizio</span><span class="calendar-date">31/07</span></div>
                         </div>
 
-                        <!-- Agosto -->
                         <div class="month-group">
                             <div class="month-title">Agosto</div>
                             <div class="calendar-item"><span class="calendar-name">Lorenzo</span><span class="calendar-date">10/08</span></div>
@@ -821,7 +792,6 @@
                             <div class="calendar-item"><span class="calendar-name">Gonzalo</span><span class="calendar-date">30/08</span></div>
                         </div>
 
-                        <!-- Septiembre -->
                         <div class="month-group">
                             <div class="month-title">Septiembre</div>
                             <div class="calendar-item"><span class="calendar-name">Andrea</span><span class="calendar-date">07/09</span></div>
@@ -830,7 +800,6 @@
                             <div class="calendar-item"><span class="calendar-name">Alejandra</span><span class="calendar-date">27/09</span></div>
                         </div>
 
-                        <!-- Octubre -->
                         <div class="month-group">
                             <div class="month-title">Octubre</div>
                             <div class="calendar-item"><span class="calendar-name">María Patricia</span><span class="calendar-date">07/10</span></div>
@@ -842,7 +811,6 @@
                             <div class="calendar-item"><span class="calendar-name">Sofía</span><span class="calendar-date">25/10</span></div>
                         </div>
 
-                        <!-- Noviembre -->
                         <div class="month-group">
                             <div class="month-title">Noviembre</div>
                             <div class="calendar-item"><span class="calendar-name">César</span><span class="calendar-date">02/11</span></div>
@@ -853,7 +821,6 @@
                             <div class="calendar-item"><span class="calendar-name">César David</span><span class="calendar-date">30/11</span></div>
                         </div>
 
-                        <!-- Diciembre -->
                         <div class="month-group">
                             <div class="month-title">Diciembre</div>
                             <div class="calendar-item"><span class="calendar-name">Constanza</span><span class="calendar-date">09/12</span></div>
@@ -866,7 +833,6 @@
 
     </div>
 
-    <!-- BOTONES DE NAVEGACIÓN -->
     <div class="controls">
         <button id="btn-prev" onclick="prevPage()" disabled>&#8592; Anterior</button>
         <button id="btn-next" onclick="nextPage()">Siguiente &#8594;</button>
